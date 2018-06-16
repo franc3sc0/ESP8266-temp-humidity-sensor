@@ -1,16 +1,12 @@
 #include <ThingSpeak.h>
 #include <ESP8266WiFi.h>
 #include <DHT.h>
+#include "PrivateEnvVariables.h"
 
 #define DHTPIN 4      // DHT Sensor connected to digital pin 2.
 #define DHTTYPE DHT11 // Type of DHT sensor.
 
-char ssid[] = ""; // Change this to your network SSID (name).
-char pass[] = ""; // Change this your network password.
-long channelID = 0; // Change this to your channel ID.
-char writeAPIKey[] = ""; // Change this to your channel Write API Key.
-
-const unsigned long postingInterval = 20L * 1000L; // Post data every 20 seconds.
+const unsigned long postingInterval = 60L * 1000L; // Post data every 60 seconds.
 
 WiFiClient client;        // Initialize the Wifi client library.
 DHT dht(DHTPIN, DHTTYPE); // Initialize DHT sensor.
@@ -62,7 +58,8 @@ int connectWifi()
 // Get the most recent readings for temperature and humidity.
 void updateDHT()
 {
-  dhtTemp = dht.readTemperature(true);
+  // To return Fahrenheit use dht.readTemperature(true)
+  dhtTemp = dht.readTemperature();
   dhtHumidity = dht.readHumidity();
   Serial.println(dhtTemp);
   Serial.println(dhtHumidity);
